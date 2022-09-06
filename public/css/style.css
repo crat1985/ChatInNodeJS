@@ -1,0 +1,29 @@
+.maindiv {
+  color: white;
+  background-color: rgba(0, 0, 255, 0.5);
+  width: calc(100vw - 40px);
+  min-height: calc(100vh - 40px);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+body {
+  min-width: 100%;
+  min-height: 100%;
+  background: purple;
+  box-sizing: border-box;
+}
+.play {
+  margin: 0 auto;
+  border: 1px solid rgb(0, 0, 200);
+  padding: 10px;
+  /* display: inline-block; */
+  width: fit-content;
+  background-color: blue;
+  font-weight: bold;
+  transition: 0.25s ease;
+}
+.play:hover {
+  cursor: pointer;
+  scale: 1.1;
+}

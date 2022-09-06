@@ -1,0 +1,55 @@
+body {
+  background-color: purple;
+  margin: 0;
+  /* box-sizing: border-box; */
+  padding: 0;
+}
+input[type="submit"] {
+  background-color: blue;
+  border: 2px solid rgb(0, 0, 222);
+  font-weight: bold;
+  color: white;
+}
+input {
+  margin: 0 auto;
+  width: fit-content;
+}
+.btn {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border: 2px solid black;
+}
+.btn:hover {
+  background-color: darkgray;
+}
+.btn:active {
+  background-color: gray;
+}
+.morpion {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  margin: 0 auto;
+}
+.hidden {
+  display: none;
+}
+.pseudoOk {
+  margin: 0;
+}
+.sendMessageBox {
+  background-color: blue;
+  width: 100vw;
+  height: calc(100vh - 36px);
+}
+.textEntryForm {
+  position: absolute;
+  bottom: 0;
+}
+.textEntry {
+  width: calc(100vw - 85px);
+}
+.sendMsg {
+  width: 69px;
+}

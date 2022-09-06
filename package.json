@@ -1,0 +1,21 @@
+{
+  "name": "chatinnodejs",
+  "version": "1.0.0",
+  "description": "First test of a chat using NodeJS, ExpressJS and Socket.io",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "RIC21000",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.0",
+    "express": "^4.18.1",
+    "jquery": "^3.6.1",
+    "socket.io": "^4.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
