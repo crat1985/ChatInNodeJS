@@ -6,6 +6,10 @@ const { Server } = require("socket.io");
 const http = require("http").createServer(app);
 
 app
+  .use("/app", (req, res, next) => {
+    console.log(req.ip);
+    next();
+  })
   .use(
     "/bootstrap/css",
     express.static(path.join(__dirname, "node_modules/bootstrap/dist/css"))
@@ -41,13 +45,17 @@ io.on("connection", (socket) => {
       socket.emit("pseudoOk");
       players.forEach((player) => {
         console.log("DEBUG - " + player.pseudo, socket.pseudo);
+        player.emit("numberChanged", players.length);
         if (player.pseudo != socket.pseudo) {
           player.emit(
             "msg-received",
             socket.pseudo + " vient de se connecter au chat !"
           );
+        } else {
+          player.emit("msg-received", "Bienvenue sur le chat !");
         }
       });
+      socket.emit("numberChanged", players.length);
       socket.on("msg-sent", (msg) => {
         players.forEach((player) => {
           if (player.pseudo == socket.pseudo) {
@@ -61,16 +69,21 @@ io.on("connection", (socket) => {
       socket.pseudo = undefined;
     }
   });
-  socket.on("disconnect", (socket) => {
-    players.forEach((player) => {
-      if (player.pseudo != socket.pseudo && socket.pseudo != undefined) {
+  socket.on("disconnect", () => {
+    if (socket.pseudo != undefined) {
+      players.pop(socket);
+      players.forEach((player) => {
         player.emit(
           "msg-received",
           socket.pseudo + " vient de se déconnecter du chat !"
         );
-      }
+      });
+    }
+
+    players.forEach((player) => {
+      player.emit("numberChanged", players.length);
     });
-    players.pop(socket.pseudo);
+
     console.log("Nb de gens en ligne :", players.length);
   });
 });
