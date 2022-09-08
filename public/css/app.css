@@ -1,11 +1,12 @@
 body {
   background-color: purple;
-  margin: 0;
+  margin: 10px;
   /* box-sizing: border-box; */
   padding: 0;
 }
 * {
   transition: 0.25s ease;
+  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
 }
 input[type="submit"] {
   background-color: blue;
@@ -44,10 +45,12 @@ p {
 }
 .sendMessageBox {
   background-color: blue;
-  width: calc(100vw - 20px);
-  /* min-height: calc(100vh - 74px); */
+  width: calc(100vw - 40px);
+  /* min-height: 30vh; */
   padding: 10px;
   border-radius: 15px;
+  margin: 0 auto;
+  position: relative;
 }
 .textEntryForm {
   position: flex;
@@ -58,4 +61,7 @@ p {
 }
 .sendMsg {
   width: 69px;
+}
+.loginInfos {
+  margin: 10px;
 }

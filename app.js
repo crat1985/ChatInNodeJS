@@ -38,36 +38,49 @@ io.on("connection", (socket) => {
   console.log("New connection !", socket.id);
 
   socket.on("pseudo", (pseudo) => {
-    if (pseudo.length >= 5) {
+    if (pseudo.includes(" ") || pseudo.includes("\n") || pseudo.length < 5) {
+      socket.emit("badPseudo");
+      return;
+    }
+    let quit = false;
+    players.forEach((player) => {
+      if (player.pseudo === pseudo) {
+        socket.emit("alreadyConnected");
+        quit = true;
+        return;
+      }
+    });
+    if(quit) return;
+    if (!players.includes(socket)) {
       players.push(socket);
-      console.log("Nb de gens en ligne :", players.length);
-      socket.pseudo = pseudo;
-      socket.emit("pseudoOk");
+    }
+    console.log("Nb de gens en ligne :", players.length);
+    socket.pseudo = pseudo;
+    socket.emit("pseudoOk");
+    players.forEach((player) => {
+      player.emit("numberChanged", players.length);
+      if (player.pseudo != socket.pseudo) {
+        player.emit(
+          "msg-received",
+          socket.pseudo + " vient de se connecter au chat !"
+        );
+      } else {
+        player.emit("msg-received", "Bienvenue sur le chat !");
+      }
+    });
+    socket.emit("numberChanged", players.length);
+    socket.on("msg-sent", (msg) => {
+      if(msg.includes("\n")){
+        msg = msg.replace("\n","");
+      }
       players.forEach((player) => {
-        console.log("DEBUG - " + player.pseudo, socket.pseudo);
-        player.emit("numberChanged", players.length);
-        if (player.pseudo != socket.pseudo) {
-          player.emit(
-            "msg-received",
-            socket.pseudo + " vient de se connecter au chat !"
-          );
+        if (player.pseudo == socket.pseudo) {
+          socket.emit("msg-received", "Toi : " + msg);
         } else {
-          player.emit("msg-received", "Bienvenue sur le chat !");
+          player.emit("msg-received", socket.pseudo + " : " + msg);
         }
       });
-      socket.emit("numberChanged", players.length);
-      socket.on("msg-sent", (msg) => {
-        players.forEach((player) => {
-          if (player.pseudo == socket.pseudo) {
-            socket.emit("msg-received", "Toi : " + msg);
-          } else {
-            player.emit("msg-received", socket.pseudo + " : " + msg);
-          }
-        });
-      });
-    } else {
-      socket.pseudo = undefined;
-    }
+    });
   });
   socket.on("disconnect", () => {
     if (socket.pseudo != undefined) {

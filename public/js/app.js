@@ -10,13 +10,23 @@ const textEntry = document.querySelector(".textEntry");
 const connectedClientsNumber = document.querySelector(
   ".connectedClientsNumber"
 );
-const socket = io({ transports: ["websocket"], upgrade: false });
+var socket = null;
 submit.addEventListener("click", (e) => {
   e.preventDefault();
-  let pseudo = document.getElementById("pseudo").value;
-  if (pseudo.length < 5) {
-    return;
+  if (socket === null) {
+    socket = io();
+    socket.on("badPseudo", () => {
+      alert(
+        "Your usename cannot contains spaces, must have at least 5 caracters and must begin by a letter (not a number)"
+      );
+      submit.value = "Se connecter au chat";
+    });
+    socket.on("alreadyConnected", () => {
+      alert("Someone with your username is already connected !");
+      submit.value = "Se connecter au chat";
+    });
   }
+  let pseudo = document.getElementById("pseudo").value;
   socket.emit("pseudo", pseudo);
   submit.value = "Verifying pseudo...";
   socket.on("pseudoOk", () => {
