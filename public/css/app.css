@@ -57,11 +57,25 @@ p {
   bottom: 0;
 }
 .textEntry {
-  width: calc(100vw - 85px);
+  width: calc(100vw - 125px);
 }
 .sendMsg {
   width: 69px;
 }
 .loginInfos {
   margin: 10px;
+}
+.someone{
+  margin: 5px;
+  padding: 10px;
+  display: inline-block;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+.you{
+  margin: 5px;
+  padding: 10px;
+  display: inline-block;
+  border: 2px solid darkblue;
+  border-radius: 10px;
 }

@@ -25,16 +25,19 @@ submit.addEventListener("click", (e) => {
       alert("Someone with your username is already connected !");
       submit.value = "Se connecter au chat";
     });
-  }
-  let pseudo = document.getElementById("pseudo").value;
-  socket.emit("pseudo", pseudo);
-  submit.value = "Verifying pseudo...";
-  socket.on("pseudoOk", () => {
-    pseudoOkP.classList.remove("hidden");
-    pseudoOkP.innerText =
-      "Your pseudo has been accepted by the verificator XD !";
-    form.classList.add("hidden");
-    connectedClientsNumber.classList.remove("hidden");
+    socket.on("pseudoOk", () => {
+      pseudoOkP.classList.remove("hidden");
+      pseudoOkP.innerText =
+        "Your pseudo has been accepted by the verificator XD !";
+      form.classList.add("hidden");
+      connectedClientsNumber.classList.remove("hidden");
+      sendMessageBox.classList.remove("hidden");
+      sendMsg.addEventListener("click", (e) => {
+        e.preventDefault();
+        socket.emit("msg-sent", textEntry.value);
+        textEntry.value = "";
+      });
+    });
     socket.on("numberChanged", (number) => {
       if (number < 2) {
         connectedClientsNumber.innerText = number + " client connected !";
@@ -42,15 +45,24 @@ submit.addEventListener("click", (e) => {
         connectedClientsNumber.innerText = number + " clients connected !";
       }
     });
-    sendMessageBox.classList.remove("hidden");
-    sendMsg.addEventListener("click", (e) => {
-      e.preventDefault();
-      socket.emit("msg-sent", textEntry.value);
-      textEntry.value = "";
-    });
     socket.on("msg-received", (msg) => {
-      msgArea.appendChild(document.createTextNode(msg));
-      msgArea.appendChild(document.createElement("br"));
+      let textNode = document.createElement("p");
+      if(msg[0]!="serv"){
+        textNode.innerText = msg[0]+" : "+msg[1];
+      } else{
+        textNode.innerText = msg[1];
+      }
+      if(msg[0]==="Toi"){
+        textNode.classList.add("you");
+      }else{
+        textNode.classList.add("someone");
+      }
+        msgArea.appendChild(textNode);
+        msgArea.appendChild(document.createElement("br"));
+        location.replace("http://90.125.35.111:8888/app#enterYourMsg")
     });
-  });
+  }
+  let pseudo = document.getElementById("pseudo").value;
+  socket.emit("pseudo", pseudo);
+  submit.value = "Verifying pseudo...";
 });

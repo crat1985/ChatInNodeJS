@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
   console.log("New connection !", socket.id);
 
   socket.on("pseudo", (pseudo) => {
+    if(socket.pseudo != undefined) return;
     if (pseudo.includes(" ") || pseudo.includes("\n") || pseudo.length < 5) {
       socket.emit("badPseudo");
       return;
@@ -62,22 +63,23 @@ io.on("connection", (socket) => {
       if (player.pseudo != socket.pseudo) {
         player.emit(
           "msg-received",
-          socket.pseudo + " vient de se connecter au chat !"
+          ["serv", socket.pseudo + " vient de se connecter au chat !"]
         );
       } else {
-        player.emit("msg-received", "Bienvenue sur le chat !");
+        player.emit("msg-received", ["serv", "Bienvenue sur le chat !"]);
       }
     });
     socket.emit("numberChanged", players.length);
     socket.on("msg-sent", (msg) => {
+      if(msg.trim().length===0) return;
       if(msg.includes("\n")){
-        msg = msg.replace("\n","");
+        msg = msg.replaceAll("\n","");
       }
       players.forEach((player) => {
         if (player.pseudo == socket.pseudo) {
-          socket.emit("msg-received", "Toi : " + msg);
+          socket.emit("msg-received", ["Toi",msg]);
         } else {
-          player.emit("msg-received", socket.pseudo + " : " + msg);
+          player.emit("msg-received", [socket.pseudo, msg]);
         }
       });
     });
