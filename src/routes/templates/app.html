@@ -16,22 +16,12 @@
       <input type="submit" value="Se connecter au chat" class="submit" />
     </form>
     <p class="hidden pseudoOk"></p>
-    <p class="connectedClientsNumber hidden"></p>
+    <p class="connectedClientsNumber uneclasse hidden"></p>
     <br />
-    <div class="hidden morpion">
-      <div class="btn1 btn"></div>
-      <div class="btn2 btn"></div>
-      <div class="btn3 btn"></div>
-      <div class="btn4 btn"></div>
-      <div class="btn5 btn"></div>
-      <div class="btn6 btn"></div>
-      <div class="btn7 btn"></div>
-      <div class="btn8 btn"></div>
-      <div class="btn9 btn"></div>
-    </div>
     <div class="hidden sendMessageBox">
       <div class="msgArea"></div>
       <form class="textEntryForm">
+        <p style="height:10px;color: white" class="connectedClientsNumber">test</p>
         <input
           type="text"
           name="textEntry"
@@ -39,6 +29,7 @@
           id="enterYourMsg"
           placeholder="Entrez votre message"
         />
+        <img src="/images/send.png" height="40px" alt="Send" class="sendIcon">
         <input type="submit" value="Envoyer" class="sendMsg" />
       </form>
     </div>

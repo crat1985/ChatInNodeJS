@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
       }
       players.forEach((player) => {
         if (player.pseudo == socket.pseudo) {
-          socket.emit("msg-received", ["Toi",msg]);
+          player.emit("msg-received", ["Toi",msg]);
         } else {
           player.emit("msg-received", [socket.pseudo, msg]);
         }
@@ -90,15 +90,11 @@ io.on("connection", (socket) => {
       players.forEach((player) => {
         player.emit(
           "msg-received",
-          socket.pseudo + " vient de se déconnecter du chat !"
+          ["serv",socket.pseudo + " vient de se déconnecter du chat !"]
         );
+        player.emit("numberChanged", players.length)
       });
     }
-
-    players.forEach((player) => {
-      player.emit("numberChanged", players.length);
-    });
-
     console.log("Nb de gens en ligne :", players.length);
   });
 });
